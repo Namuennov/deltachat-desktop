@@ -4,17 +4,13 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-sh 'pwd'
-sh 'ls'
-                sh 'cd dockerArtifacts'
-sh 'ls'
-                sh 'docker-compose build'
+                sh 'docker-compose --file dockerArtifacts/docker-compose.yml build'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'docker-compose up'
+                sh 'docker-compose --file dockerArtifacts/docker-compose.yml up'
             }
         }
     }
