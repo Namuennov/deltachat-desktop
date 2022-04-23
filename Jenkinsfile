@@ -7,11 +7,12 @@ pipeline {
                 sh 'docker-compose --file dockerArtifacts/docker-compose.yml build'
                 script {
                     if (currentBuild.currentResult == 'SUCCESS') {
-                        mail bcc: '', body: "Built succesfully! <3", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "Jenkins deltachat: build status", to: "jakubforys@student.agh.edu.pl";
+                        sh 'echo "Built succesfully! <3" > buildResult.txt'
                     }
                     else {
-                        mail bcc: '', body: "Build failed! :(", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "Jenkins deltachat: build status", to: "jakubforys@student.agh.edu.pl";
+                        sh 'echo "Build failed! :(" > buildResult.txt'
                     }
+                    archiveArtifacts artifacts: 'buildResult.txt'
                 }
             }
         }
@@ -21,11 +22,12 @@ pipeline {
                 sh 'docker-compose --file dockerArtifacts/docker-compose.yml up'
                 script {
                     if (currentBuild.currentResult == 'SUCCESS') {
-                        mail bcc: '', body: "All tests passed! <3", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "Jenkins deltachat: tests status", to: "jakubforys@student.agh.edu.pl";
+                        sh 'echo "All tests passed! <3" > testResult.txt'
                     }
                     else {
-                        mail bcc: '', body: "Some tests failed! :(", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "Jenkins deltachat: tests status", to: "jakubforys@student.agh.edu.pl";
+                        sh 'echo "Some tests failed! <3" > testResult.txt'
                     }
+                    archiveArtifacts artifacts: 'testResult.txt'
                 }
             }
         }
