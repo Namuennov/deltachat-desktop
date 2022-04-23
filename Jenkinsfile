@@ -20,7 +20,6 @@ pipeline {
         stage('Test') {
             steps {
                 sh 'docker-compose --file dockerArtifacts/docker-compose.yml up'
-                sh 'docker images'
                 script {
                     if (currentBuild.currentResult == 'SUCCESS') {
                         sh 'echo "All tests passed! <3" > testResult.txt'
@@ -29,6 +28,21 @@ pipeline {
                         sh 'echo "Some tests failed! <3" > testResult.txt'
                     }
                     archiveArtifacts artifacts: 'testResult.txt'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh 'docker run build-agent'
+                script {
+                    if (currentBuild.currentResult == 'SUCCESS') {
+                        sh 'echo "Deployed succesfully! <3" > deployResult.txt'
+                    }
+                    else {
+                        sh 'echo "Deploy failed! <3" > deployResult.txt'
+                    }
+                    archiveArtifacts artifacts: 'deployResult.txt'
                 }
             }
         }
