@@ -20,6 +20,7 @@ pipeline {
         stage('Test') {
             steps {
                 sh 'docker-compose --file dockerArtifacts/docker-compose.yml up'
+                sh 'docker container ls'
                 script {
                     if (currentBuild.currentResult == 'SUCCESS') {
                         sh 'echo "All tests passed! <3" > testResult.txt'
