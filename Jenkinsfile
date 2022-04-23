@@ -7,6 +7,7 @@ pipeline {
 sh 'pwd'
 sh 'ls'
                 sh 'cd dockerArtifacts'
+sh 'ls'
                 sh 'docker-compose build'
             }
         }
